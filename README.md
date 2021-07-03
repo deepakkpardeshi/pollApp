@@ -1,2 +1,0 @@
-# pollApp
-react app

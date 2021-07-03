@@ -30,9 +30,9 @@ const Details = ({ setShowDetails, questionId }) => {
       <div>{questionDetails.question}</div>
       {questionDetails !== undefined ?
       <GridList
-        cellHeight={160}
+        cellHeight={50}
         className="gridList"
-        cols={3}
+        cols={1}
         onClick={(e) => {}}
       >
         {questionDetails && questionDetails.choices && Array.isArray(questionDetails.choices) &&
