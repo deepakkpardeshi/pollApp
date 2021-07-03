@@ -1,20 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { GridList, GridListTile, Button, Tooltip } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+  GridList,
+  GridListTile,
+  Popover,
+  makeStyles,
+} from "@material-ui/core";
 import "../App.css";
 import { Link, useHistory } from "react-router-dom";
 // const baseURL = "https://polls.apiblueprint.org";
 
+const useStyles = makeStyles((theme) => ({
+  popover: {
+    pointerEvents: "none",
+  },
+  popoverContent: {
+    pointerEvents: "auto",
+  },
+}));
+
 const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
-  // const [pollList, setPollList] = useState([]);
-  const [hoverOn, setHoverOn] = useState(false);
-  // using
-  let history = useHistory()
+  let history = useHistory();
+  const [openedPopover, setOpenedPopover] = useState(false);
+  const [id, setId] = useState(false);
+  const popoverAnchor = React.useRef(null);
+
+  const classes = useStyles();
+
+  const popoverEnter = (e) => {
+    console.log(e.target);
+    setId(e.target.id);
+    setOpenedPopover(true);
+  };
+
+  const popoverLeave = ({ currentTarget }) => {
+    setOpenedPopover(false);
+  };
 
   return (
     <div>
       <h1>Questions</h1>
-      {/* {hoverOn && <div>showing</div>} */}
-
       <GridList
         cellHeight={50}
         className="gridList"
@@ -25,7 +49,7 @@ const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
             const id = selQuestion.replace("/questions/", "");
             setQuestionId(Number(id));
             setShowDetails(true);
-            history.push("/details")
+            history.push("/details");
           } catch (error) {
             console.log(error);
           }
@@ -36,13 +60,43 @@ const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
           pollList.map((question) => (
             <GridListTile id={question.url} key={question.url} cols={1}>
               <div
+                style={{ backgroundColor: "gray" }}
+                // ref={anchorEl}
+                ref={popoverAnchor}
+                aria-owns="mouse-over-popover"
+                aria-haspopup="true"
+                onMouseEnter={popoverEnter}
+                onMouseLeave={popoverLeave}
                 id={question.url}
-                // onMouseLeave={() => setHoverOn(false)}
-                // onMouseEnter={() => setHoverOn(true)}
               >
-                {question.question}
+                <Link id={question.url} to="/details">
+                  {question.question}
+                </Link>
+                <Popover
+                  id="mouse-over-popover"
+                  className={classes.popover}
+                  classes={{
+                    paper: classes.popoverContent,
+                  }}
+                  // open={openedPopover}
+                  open={id === question.url}
+                  anchorEl={popoverAnchor.current}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  PaperProps={{
+                    onMouseEnter: popoverEnter,
+                    onMouseLeave: popoverLeave,
+                  }}
+                >
+                  <div>{question.url}</div>
+                </Popover>
               </div>
-              <Link to="/details">{question.url}</Link>
             </GridListTile>
           ))}
       </GridList>
