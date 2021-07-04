@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GridList, GridListTile, Popover, makeStyles } from "@material-ui/core";
+import { GridList, GridListTile, Popover, makeStyles, Button } from "@material-ui/core";
 import "../App.css";
 import { Link, useHistory } from "react-router-dom";
 // const baseURL = "https://polls.apiblueprint.org";
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
+const Dashboard = ({ pollList, setQuestionId }) => {
   let history = useHistory();
   const [openedPopover, setOpenedPopover] = useState(false);
   const [id, setId] = useState(false);
@@ -31,12 +31,10 @@ const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
     setOpenedPopover(false);
   };
 
-  console.log(popoverAnchor.current, 'popoverAnchor', document.getElementById(id) !== null ? document.getElementById(id).getBoundingClientRect() : '');
-
-
   return (
     <div>
       <h1>Questions</h1>
+      <Button onClick={() => {history.push("/add")}}>Create New Poll</Button>
       <GridList
         cellHeight={50}
         className="gridList"
@@ -46,12 +44,10 @@ const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
           try {
             const id = selQuestion.replace("/questions/", "");
             setQuestionId(Number(id));
-            setShowDetails(true);
             history.push("/details");
           } catch (error) {
             console.log(error);
           }
-          console.log(e.target.id);
         }}
       >
         {pollList &&

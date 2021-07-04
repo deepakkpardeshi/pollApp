@@ -2,11 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  GridList,
-  GridListTile,
-  List,
-  ListItem,
-  ListItemText,
   Button,
   Checkbox,
 } from "@material-ui/core";
@@ -26,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Details = ({ setShowDetails, questionId }) => {
+const Details = ({ questionId }) => {
   console.log("questionId", questionId);
   const [questionDetails, setquestionDetails] = useState({});
   const classes = useStyles();
@@ -80,7 +75,7 @@ const Details = ({ setShowDetails, questionId }) => {
     }
   }, [questionId]);
   return (
-    <div>
+    <div style={{maxWidth: 500, justifyContent: 'center'}}>
       <div>Questions Details</div>
       <div>Question - {questionDetails.question}</div>
       <Button onClick={() => postVote()}> Save Vote </Button>
@@ -90,13 +85,13 @@ const Details = ({ setShowDetails, questionId }) => {
             <TableHead>
               <TableRow>
                 <TableCell>Choices</TableCell>
-                <TableCell align="right" maxWidth={50}>
+                <TableCell align="center">
                   Votes
                 </TableCell>
-                <TableCell align="right" maxWidth={50}>
+                <TableCell align="center">
                   Percentage
                 </TableCell>
-                <TableCell align="right" maxWidth={50}>
+                <TableCell align="center">
                   Select
                 </TableCell>
               </TableRow>
@@ -107,17 +102,17 @@ const Details = ({ setShowDetails, questionId }) => {
                 Array.isArray(questionDetails.choices) &&
                 questionDetails.choices.map((choice) => (
                   <TableRow key={choice.choice}>
-                    <TableCell component="th" scope="row" maxWidth={50}>
+                    <TableCell component="th" scope="row">
                       {choice.choice}
                     </TableCell>
-                    <TableCell component="th" scope="row" maxWidth={50}>
+                    <TableCell component="th" scope="row">
                       {choice.votes}
                     </TableCell>
-                    <TableCell component="th" scope="row" maxWidth={50}>
+                    <TableCell component="th" scope="row">
                       {calPercentage(choice.votes)}
                       %
                     </TableCell>
-                    <TableCell component="th" scope="row" maxWidth={50}>
+                    <TableCell component="th" scope="row">
                       <Checkbox
                         id={choice.url}
                         checked={choice.url === checked.id}
