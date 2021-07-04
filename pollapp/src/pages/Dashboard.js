@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  GridList,
-  GridListTile,
-  Popover,
-  makeStyles,
-} from "@material-ui/core";
+import { GridList, GridListTile, Popover, makeStyles } from "@material-ui/core";
 import "../App.css";
 import { Link, useHistory } from "react-router-dom";
 // const baseURL = "https://polls.apiblueprint.org";
@@ -36,6 +31,9 @@ const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
     setOpenedPopover(false);
   };
 
+  console.log(popoverAnchor.current, 'popoverAnchor', document.getElementById(id) !== null ? document.getElementById(id).getBoundingClientRect() : '');
+
+
   return (
     <div>
       <h1>Questions</h1>
@@ -62,7 +60,7 @@ const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
               <div
                 style={{ backgroundColor: "gray" }}
                 // ref={anchorEl}
-                ref={popoverAnchor}
+                // ref={popoverAnchor}
                 aria-owns="mouse-over-popover"
                 aria-haspopup="true"
                 onMouseEnter={popoverEnter}
@@ -73,7 +71,13 @@ const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
                   {question.question}
                 </Link>
                 <Popover
-                  id="mouse-over-popover"
+                  // id="mouse-over-popover"
+                  style={{
+                    position: 'absolute',
+                    top:0,
+                    left: -1000
+                    }}
+                  id={question.question}
                   className={classes.popover}
                   classes={{
                     paper: classes.popoverContent,
@@ -94,7 +98,16 @@ const Dashboard = ({ setShowDetails, pollList, setQuestionId }) => {
                     onMouseLeave: popoverLeave,
                   }}
                 >
-                  <div>{question.url}</div>
+                  <div  style={{
+                    // top:document.getElementById(id) !== null && document.getElementById(id).getBoundingClientRect().top,
+                    // left: document.getElementById(id) !== null && document.getElementById(id).getBoundingClientRect().left
+                    top: 10,
+                    left: 10,
+
+    }}>
+                    <div>{question.url}</div>
+                    <div>{question.url}</div>
+                  </div>
                 </Popover>
               </div>
             </GridListTile>
